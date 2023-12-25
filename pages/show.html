@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>QR Base Info</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+        <script type="text/javascript" src="https://www.gstatic.com/firebasejs/3.6.3/firebase.js"></script>
+        <script language="javascript" type="text/javascript" src="../js/firebase_config.js"></script>
+        <script language="javascript" type="text/javascript" src="../js/validation.js"></script>
+        <script language="javascript" type="text/javascript" src="../js/scholarship.js"></script>
+
+        <style>
+            html,body,h1,h2,h3,h4 {font-family:"Lato", sans-serif}
+            .mySlides {display:none}
+            .w3-tag, .fa {cursor:pointer}
+            .w3-tag {height:15px;width:15px;padding:0;margin-top:6px}
+            .w3-col.w1 {width:20%}
+            .qr-code {max-width: 200px;margin: 10px;}
+        </style>
+    </head>
+
+<body onload="getUrlVars(), Show_QR_Code_UserDetails()">
+
+    <div style="margin-top: 50px; margin-left: 100px;">
+        <h1><b>WELCOME</b></h1>
+        <h1 id="user_name"></h1>
+    </div>
+
+
+    <!-- Grid -->
+    <div class="w3-row-padding">
+        
+        <div class="w3-third w3-margin-bottom">
+            <ul class="w3-ul w3-border w3-center w3-hover-shadow">
+                <li class="w3-black w3-xlarge w3-padding-32">Personal Details</li>
+            </ul>
+
+            <form id="show_personaldetails">
+                <div class="w3-border w3-hover-shadow">
+                    <div class="w3-section" style="width: 95%; margin: auto;">
+                        <label>Name *</label>
+                        <input class="w3-input w3-border w3-hover-border-black" style="width:100%;" type="text" id="show_username" readonly>
+                    </div>
+
+                    <div class="w3-section" style="width: 95%; margin: auto;">
+                        <label>Mother's Name *</label>
+                        <input class="w3-input w3-border w3-hover-border-black" style="width:100%;" type="text" id="show_mothername" readonly>
+                    </div>
+
+                    <div class="w3-section" style="width: 95%; margin: auto;">
+                        <label>Father's Name *</label>
+                        <input class="w3-input w3-border w3-hover-border-black" style="width:100%;" type="text" id="show_fathername" readonly>
+                    </div>
+
+                    <div class="w3-section" style="width: 95%; margin: auto;">
+                        <label>Date of Birth *</label>
+                        <input class="w3-input w3-border w3-hover-border-black" style="width:100%;" type="date" id="show_dob" readonly>
+                    </div>
+
+                    <div class="w3-section" style="width: 95%; margin: auto;">
+                        <label>Age*</label>
+                        <input class="w3-input w3-border w3-hover-border-black" style="width:100%;" type="number" id="show_age" min="18" max="100" readonly>
+                    </div>
+
+                    <div class="w3-section" style="width: 95%; margin: auto;">
+                        <label>Gender *</label>
+                        <br>
+                        <label class="radio-inline">Male</label>
+                        <input type="radio" id="show_male" name="gender" value="Male" readonly>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <label class="radio-inline">Female</label>
+                        <input type="radio" id="show_female" name="gender" value="Female" readonly></br>
+                    </div>
+
+                    <div class="w3-section" style="width: 95%; margin: auto;">
+                        <label>Email</label>
+                        <input class="w3-input w3-border w3-hover-border-black" style="width:100%;" type="text" id="show_email" readonly>
+                    </div>
+
+                    <div class="w3-section" style="width: 95%; margin: auto;">
+                        <label>Religion *</label>
+                        <select class="w3-input w3-border w3-hover-border-black" style="width:100%;" id="show_religion" name="show_rel" required>
+                            <option value="Select Religion">Select Religion</option>
+                            <option value="Buddhist">Buddhist</option>
+                            <option value="Christian">Christian</option>
+                            <option value="Jain">Jain</option>
+                            <option value="Muslim">Muslim</option>
+                            <option value="Parsi">Parsi</option>
+                            <option value="Sikh">Sikh</option>
+                            <option value="Jews">Jews</option>
+                            <option value="Hindu">Hindu</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="w3-third w3-margin-bottom">
+            <ul class="w3-ul w3-border w3-center w3-hover-shadow">
+                <li class="w3-dark-grey w3-xlarge w3-padding-32">Education Details</li>
+            </ul>
+
+            <form id="show_educationdetails">
+                <div class="w3-border w3-hover-shadow">
+                    <div class="w3-section" style="width: 95%; margin: auto;">
+                        <label>Degree *</label>
+                        <select class="w3-input w3-border w3-hover-border-black" style="width:100%;" id="show_deg" name="degree" readonly>
+                            <option value="Select Degree">Select Degree</option>
+                            <option value="B. Tech">B. Tech</option>
+                            <option value="B.E.">B.E.</option>
+                            <option value="MBA">MBA</option>
+                            <option value="Other">Other..</option>
+                        </select>
+                    </div>
+    
+                    <div class="w3-section" style="width: 95%; margin: auto;">
+                        <label>Branch *</label>
+                        <select class="w3-input w3-border w3-hover-border-black" style="width:100%;" id="show_branch" name="branch" readonly>
+                            <option value="Select Branch">Select Branch</option>
+                            <option value="Artificial Intelligence">Artificial Intelligence</option>
+                            <option value="Civil Engineering">Civil Engineering</option>
+                            <option value="Computer Science and Engineering">Computer Science and Engineering</option>
+                            <option value="Computer Science and Engineering">Computer Science and Engineering</option>
+                            <option value="Data science,IOT & Cyber Security (DIC)">Data science,IOT & Cyber Security (DIC)</option>
+                            <option value="Electrical engineering">Electrical engineering</option>
+                            <option value="Electronics Engineering">Electronics Engineering</option>
+                            <option value="Electronics and Telecommunication">Electronics and Telecommunication</option>
+                            <option value="Mechanical Engineering">Mechanical Engineering</option>
+                            <option value="Information Technology">Information Technology</option>
+                            <option value="Management studies (MBA)">Management studies (MBA)</option>
+                        </select>
+                    </div>
+    
+                    <div class="w3-section" style="width: 95%; margin: auto;">
+                        <label>Current Year *</label>
+                        <select class="w3-input w3-border w3-hover-border-black" style="width:100%;" id="show_currentyear" name="currentyear" readonly>
+                            <option value="Select Year">Select Year</option>
+                            <option value="1">1st</option>
+                            <option value="2">2nd</option>
+                            <option value="3">3rd</option>
+                            <option value="4">4th</option>
+                        </select>
+                    </div>
+    
+                    <div class="w3-section" style="width: 95%; margin: auto;">
+                        <label>Passing Year *</label>
+                        <input class="w3-input w3-border w3-hover-border-black" style="width:100%;" id="show_passingyear" type="text" readonly>
+                    </div>
+    
+                    <div class="w3-section" style="width: 95%; margin: auto;">
+                        <label>Admission Type *</label>
+                        <select class="w3-input w3-border w3-hover-border-black" style="width:100%;" id="show_admissiontype" name="admissiontype" readonly>
+                            <option value="Select Admission Type">Select Admission Type</option>
+                            <option value="Cap">Cap</option>
+                            <option value="Non Cap">Non Cap</option>
+                        </select>
+                    </div>
+    
+                    <div class="w3-section" style="width: 95%; margin: auto;">
+                        <label>10th Percentage *</label>
+                        <input class="w3-input w3-border w3-hover-border-black" style="width:100%;" id="show_tenthpercentage" type="text" readonly>
+                    </div>
+    
+                    <div class="w3-section" style="width: 95%; margin: auto;">
+                        <label>12th Percentage *</label>
+                        <input class="w3-input w3-border w3-hover-border-black" style="width:100%;" id="show_twelfthpercentage" type="text" readonly>
+                    </div>
+
+                    <div class="w3-section" style="width: 95%; margin: auto; display: none;">
+                        <label>Fees Paid</label>
+                        <input class="w3-input w3-border w3-hover-border-black" style="width:100%;" type="text" id="show_feespaid" required>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="w3-third w3-margin-bottom">
+            <ul class="w3-ul w3-border w3-center w3-hover-shadow">
+                <li class="w3-black w3-xlarge w3-padding-32">Scholarship Details</li>
+            </ul>
+
+            <form id="show_scholarshipdetails">
+                <div class="w3-border w3-hover-shadow">
+                    <div class="w3-section" style="width: 95%; margin: auto;">
+                        <label>Scholarship Allotted ? *</label>
+                        <br>
+                        <label class="radio-inline">Yes</label>
+                        <input type="radio" id="show_scholarshipallotted_yes" name="scholarshipallotted" value="yes" readonly>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <label class="radio-inline">No</label>
+                        <input type="radio" id="show_scholarshipallotted_no" name="scholarshipallotted" value="no" readonly></br>
+                    </div>
+    
+                    <div class="w3-section" style="width: 95%; margin: auto;">
+                        <label>Are you allotted a Government Scholarship ? *</label>
+                        <br>
+                        <label class="radio-inline">Yes</label>
+                        <input type="radio" id="show_governmentscholarship_yes" name="governmentscholarship" value="yes" onclick="Show_GovernmentScholarshipName()" readonly>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <label class="radio-inline">No</label>
+                        <input type="radio" id="show_governmentscholarship_no" name="governmentscholarship" value="no" onclick="Hide_GovernmentScholarshipName()" readonly></br>
+                    </div>
+    
+                    <div id="show_governmentscholarship_name" class="w3-section" style="width: 95%; margin: auto;">
+                        <label>If yes, Name Scholarship allotted.</label>
+                        <input class="w3-input w3-border w3-hover-border-black" style="width:100%;" id="show_governmentscholarshipname" type="text" readonly>
+                    </div>
+    
+                    <div class="w3-section" style="width: 95%; margin: auto;">
+                        <label>Are you allotted any private scholarship?</label>
+                        <br>
+                        <label class="radio-inline">Yes</label>
+                        <input type="radio" id="show_privatescholarship_yes" name="privatescholarship" value="yes" onclick="Show_PrivateScholarshipName()" readonly>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <label class="radio-inline">No</label>
+                        <input type="radio" id="show_privatescholarship_no" name="privatescholarship" value="no" onclick="Hide_PrivateScholarshipName()" readonly>
+                    </div>
+    
+                    <div id="show_privatescholarship_name" class="w3-section" style="width: 95%; margin: auto;">
+                        <label>If yes, Name the private Scholarship allotted.</label>
+                        <input class="w3-input w3-border w3-hover-border-black" style="width:100%;" id="show_privatescholarshipname" type="text" readonly>
+                    </div>
+    
+                    <div class="w3-section" style="width: 95%; margin: auto;">
+                        <label>Father's Occupation *</label>
+                        <input class="w3-input w3-border w3-hover-border-black" style="width:100%;" id="show_fatheroccupation" type="text" readonly>
+                    </div>
+    
+                    <div class="w3-section" style="width: 95%; margin: auto;">
+                        <label>Annual Income *</label>
+                        <input class="w3-input w3-border w3-hover-border-black" style="width:100%;" id="show_annualincome" type="text" readonly>
+                    </div>
+
+                    <div class="w3-section" style="width: 95%; margin: auto;">
+                        <label>Caste *</label>
+                        <select class="w3-input w3-border w3-hover-border-black" style="width:100%;" id="show_caste" name="cas" required>
+                            <option value="Select Cast">Select Cast</option>
+                            <option value="General">General</option>
+                            <option value="OPEN">OPEN</option>
+                            <option value="OBC">OBC</option>
+                            <option value="SC">SC</option>
+                            <option value="ST">ST</option>
+                            <option value="SEBC">SEBC</option>
+                            <option value="EBC">EBC</option>
+                            <option value="VJNT">VJNT</option>
+                            <option value="SBC">SBC</option>
+                            <option value="EWS">EWS</option>
+                        </select>
+                        <small id="small_caste" style="color:red"></small>
+                    </div>
+
+                    <div class="w3-section" style="width: 95%; margin: auto;">
+                        <label>Disability *</label>
+                        <br>
+                        <label class="radio-inline">Yes</label>
+                        <input type="radio" id="show_disability_yes" name="show_disability" value="yes" onclick="Show_Select_Scholarship_clear()" required>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <label class="radio-inline">No</label>
+                        <input type="radio" id="show_disability_no" name="show_disability" value="no" onclick="Show_Select_Scholarship()" required></br>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="w3-border w3-hover-shadow" style="text-align: center; margin: auto; width: 50%;">
+        <ul class="w3-ul w3-border w3-center w3-hover-shadow">
+            <li class="w3-dark-grey w3-xlarge w3-padding-32">Scholarship</li>
+        </ul>
+        <table id="show_table_scholarship" style="text-align: center;"></table>
+    </div>
+
+<!-- Footer -->
+    <footer class="w3-container w3-padding-32 w3-light-grey w3-center">
+        <div class="w3-xlarge w3-section">
+            <i class="fa fa-facebook-official w3-hover-opacity"></i>
+            <i class="fa fa-instagram w3-hover-opacity"></i>
+            <i class="fa fa-snapchat w3-hover-opacity"></i>
+            <i class="fa fa-pinterest-p w3-hover-opacity"></i>
+            <i class="fa fa-twitter w3-hover-opacity"></i>
+            <i class="fa fa-linkedin w3-hover-opacity"></i>
+        </div>
+    </footer>
+</body>
+</html>
